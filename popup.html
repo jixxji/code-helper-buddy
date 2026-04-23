@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeetBuddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">LeetBuddy</span>
+      </div>
+      <div class="status-dot" id="statusDot" title="Status"></div>
+    </header>
+
+    <!-- API Key Setup Screen -->
+    <div class="screen" id="setupScreen">
+      <div class="setup-content">
+        <div class="setup-icon">🔑</div>
+        <h2>Connect Gemini</h2>
+        <p>Paste your free Gemini API key to get started. Your key is stored locally — never sent anywhere except Google.</p>
+        <div class="input-group">
+          <input
+            type="password"
+            id="apiKeyInput"
+            placeholder="AIza..."
+            autocomplete="off"
+          />
+          <button class="btn-primary" id="saveKeyBtn">Save Key</button>
+        </div>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="link">Get a free key →</a>
+      </div>
+    </div>
+
+    <!-- Main Chat Screen -->
+    <div class="screen hidden" id="mainScreen">
+      <div class="problem-banner" id="problemBanner">
+        <span class="problem-label">Problem</span>
+        <span class="problem-name" id="problemName">—</span>
+      </div>
+
+      <div class="hint-mode-bar">
+        <span class="mode-label">Hint level:</span>
+        <div class="mode-pills">
+          <button class="pill active" data-mode="nudge">Nudge</button>
+          <button class="pill" data-mode="hint">Hint</button>
+          <button class="pill" data-mode="approach">Approach</button>
+        </div>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="message bot-message intro">
+          <div class="bot-avatar">🤖</div>
+          <div class="bubble">
+            Hey! I'm your coding mentor. I won't give away answers — but I <em>will</em> help you think through the problem. Ask me anything!
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-prompts" id="quickPrompts">
+        <button class="quick-btn" data-prompt="Where should I even start with this problem?">Where to start?</button>
+        <button class="quick-btn" data-prompt="What data structure should I think about here?">Data structure?</button>
+        <button class="quick-btn" data-prompt="I'm stuck. Give me a small nudge without spoiling it.">I'm stuck 😅</button>
+        <button class="quick-btn" data-prompt="What's the time complexity I should aim for?">Time complexity?</button>
+      </div>
+
+      <div class="input-row">
+        <textarea
+          id="userInput"
+          placeholder="Ask for a hint, not the answer..."
+          rows="1"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" title="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <button class="reset-btn" id="resetKeyBtn">⚙ Change API Key</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
