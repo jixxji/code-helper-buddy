@@ -110,3 +110,48 @@ async function loadProblemContext() {
     problemName.textContent = "—";
   }
 }
+
+//Send Message to Gemini
+async function sendMessage(userText) {
+  if (!apiKey) return;
+
+  appendMessage("user", userText);
+  conversationHistory.push({ role: "user", text: userText });
+
+  const loadingId = appendLoading();
+  sendBtn.disabled = true;
+
+  try {
+    const systemPrompt = buildSystemPrompt();
+    const contents = buildContents(systemPrompt);
+
+    const res = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err?.error?.message || "API error");
+    }
+
+    const data = await res.json();
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Hmm, I couldn't come up with a response. Try again!";
+
+    removeLoading(loadingId);
+    appendMessage("bot", reply);
+    conversationHistory.push({ role: "assistant", text: reply });
+    statusDot.classList.add("online");
+    statusDot.classList.remove("error");
+
+  } catch (err) {
+    removeLoading(loadingId);
+    appendMessage("bot", `⚠️ Error: ${err.message}. Check your API key or try again.`);
+    statusDot.classList.add("error");
+    statusDot.classList.remove("online");
+  }
+
+  sendBtn.disabled = false;
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
